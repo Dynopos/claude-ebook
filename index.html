@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude: Penyelesaian Masalah Owner Bisnes | #BobCEO</title>
+<meta name="description" content="Panduan praktikal guna AI untuk selesaikan masalah harian bisnes anda. 50+ prompts siap guna. Percuma.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark:   #080F1A;
+    --navy:   #0D1B2A;
+    --blue:   #1565C0;
+    --blue2:  #1E88E5;
+    --lblue:  #42A5F5;
+    --cyan:   #00BCD4;
+    --gold:   #FFB300;
+    --white:  #FFFFFF;
+    --off:    #EEF2F7;
+    --muted:  #8EA8C3;
+    --glass:  rgba(255,255,255,0.05);
+    --glasb:  rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--blue);
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .topbar span { color: var(--gold); }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--lblue);
+    letter-spacing: 1px;
+  }
+  .nav-brand span { color: var(--gold); }
+  .nav-cta {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--blue2); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 24px 80px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 60% 30%, rgba(21,101,192,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,188,212,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(21,101,192,0.18);
+    border: 1px solid rgba(66,165,245,0.3);
+    color: var(--lblue);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .eyebrow::before { content: '◆'; font-size: 8px; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  h1 .accent { color: var(--lblue); }
+  h1 .gold { color: var(--gold); }
+  .hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── BOOK MOCKUP ── */
+  .book-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .book-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(21,101,192,0.35) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+  .book {
+    position: relative;
+    width: 280px;
+    background: linear-gradient(145deg, #1565C0 0%, #0D47A1 60%, #0A2E6E 100%);
+    border-radius: 8px 16px 16px 8px;
+    padding: 36px 28px;
+    box-shadow:
+      -8px 0 0 rgba(0,0,0,0.4),
+      -10px 4px 20px rgba(0,0,0,0.5),
+      0 20px 60px rgba(21,101,192,0.4),
+      inset 0 0 0 1px rgba(255,255,255,0.1);
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  .book-spine {
+    position: absolute;
+    left: -8px;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: linear-gradient(180deg, #0D47A1, #082566);
+    border-radius: 4px 0 0 4px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.4);
+  }
+  .book-top-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-bottom: 20px;
+  }
+  .book-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--lblue);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .book-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .book-title span { color: var(--lblue); display: block; }
+  .book-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .book-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 20px;
+  }
+  .book-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .book-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+  }
+  .book-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .book-author {
+    margin-top: 24px;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .book-bottom-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--lblue), transparent);
+    margin-top: 16px;
+  }
+
+  /* ── FORM SECTION ── */
+  .form-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    text-align: center;
+  }
+  .form-card {
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 48px 40px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+  }
+  .form-card h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .form-card h2 span { color: var(--gold); }
+  .form-card p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  .form-group { margin-bottom: 16px; text-align: left; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .form-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--white);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .form-group input:focus {
+    border-color: var(--blue2);
+    box-shadow: 0 0 0 3px rgba(30,136,229,0.15);
+  }
+  .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+  .btn-download {
+    width: 100%;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(21,101,192,0.5);
+  }
+  .btn-download:active { transform: translateY(0); }
+  .btn-download .btn-icon { margin-right: 8px; }
+  .form-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* Success State */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(27,94,32,0.2);
+    border: 2px solid #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+  .success-state h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #4CAF50;
+  }
+  .success-state p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .btn-actual-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 800;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-actual-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,179,0,0.4);
+  }
+
+  /* ── WHAT'S INSIDE ── */
+  .inside-section {
+    padding: 80px 24px;
+    background: linear-gradient(180deg, var(--dark) 0%, var(--navy) 100%);
+  }
+  .section-label {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--lblue);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 48px;
+    letter-spacing: -0.5px;
+  }
+  .section-title span { color: var(--gold); }
+  .chapters-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .chapter-card {
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .chapter-card:hover {
+    border-color: rgba(66,165,245,0.3);
+    transform: translateY(-3px);
+  }
+  .chapter-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue2);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .chapter-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .chapter-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── PROMPTS PREVIEW ── */
+  .prompts-section {
+    padding: 80px 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .prompt-preview {
+    background: var(--navy);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--blue2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .prompt-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--lblue);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-style: normal;
+  }
+  .blur-more {
+    position: relative;
+    overflow: hidden;
+  }
+  .blur-more::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(transparent, var(--dark));
+    pointer-events: none;
+  }
+
+  /* ── QUOTE ── */
+  .quote-section {
+    padding: 60px 24px;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  blockquote {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--white);
+    position: relative;
+    padding: 0 20px;
+  }
+  blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    font-size: 80px;
+    color: var(--blue);
+    font-family: Georgia, serif;
+    line-height: 1;
+    opacity: 0.5;
+  }
+  .quote-author {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER FORM CTA ── */
+  .footer-cta {
+    background: linear-gradient(135deg, var(--navy) 0%, #0A1628 100%);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .footer-cta h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .footer-cta h2 span { color: var(--lblue); }
+  .footer-cta p { color: var(--muted); margin-bottom: 28px; font-size: 15px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer span { color: var(--lblue); font-weight: 600; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      text-align: center;
+    }
+    .hero-stats { justify-content: center; }
+    .hero-sub { margin: 0 auto 32px; }
+    .eyebrow { margin: 0 auto 24px; }
+    .book-wrap { order: -1; }
+    .book { width: 220px; padding: 28px 22px; }
+    .book-title { font-size: 22px; }
+    .form-card { padding: 32px 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .book { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  📥 Download Percuma — <span>Terhad Untuk Masa Ini</span> — Isi Form & Dapatkan Ebook Sekarang
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">#BOB<span>CEO</span></div>
+  <a href="#download" class="nav-cta">Download Percuma →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Ebook Percuma 2025</div>
+      <h1>
+        <span class="accent">Claude</span><br>
+        Penyelesaian<br>
+        Masalah<br>
+        <span class="gold">Owner Bisnes</span>
+      </h1>
+      <p class="hero-sub">
+        Panduan praktikal guna AI untuk selesaikan masalah harian bisnes anda — dari dokumen, cashflow, pemasaran, hinggalah isu pekerja. Ditulis dari pengalaman sebenar.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">10</span>
+          <span class="stat-label">Bab Penuh</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Prompts Siap Guna</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">0</span>
+          <span class="stat-label">Ringgit</span>
+        </div>
+      </div>
+      <a href="#download" class="nav-cta" style="font-size:15px;padding:14px 28px;display:inline-block;">
+        Saya Nak Download Sekarang →
+      </a>
+    </div>
+
+    <!-- BOOK MOCKUP -->
+    <div class="book-wrap">
+      <div class="book-glow"></div>
+      <div class="book">
+        <div class="book-spine"></div>
+        <div class="book-top-line"></div>
+        <div class="book-label">Panduan Praktikal AI</div>
+        <div class="book-title">CLAUDE<span>Penyelesaian Masalah Owner Bisnes</span></div>
+        <div class="book-subtitle">Guna AI Selesaikan Masalah Bisnes Harian Anda</div>
+        <div class="book-divider"></div>
+        <div class="book-badges">
+          <div class="book-badge"><div class="book-badge-dot"></div>10 Bab Lengkap</div>
+          <div class="book-badge"><div class="book-badge-dot"></div>50+ Prompts Siap Guna</div>
+          <div class="book-badge"><div class="book-badge-dot"></div>Dari Pengalaman Sebenar</div>
+          <div class="book-badge"><div class="book-badge-dot"></div>Guna Phone atau PC</div>
+        </div>
+        <div class="book-author">#BobCEO · 2025</div>
+        <div class="book-bottom-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="inside-section">
+  <div class="section-label">Isi Kandungan</div>
+  <h2 class="section-title">Apa Yang Ada <span>Dalam Ebook</span> Ni?</h2>
+  <div class="chapters-grid">
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 01</div>
+      <div class="chapter-name">Apa Itu Claude</div>
+      <div class="chapter-desc">Kenapa owner bisnes perlu tahu & cara akses — percuma bermula</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 02</div>
+      <div class="chapter-name">Masalah Dokumen</div>
+      <div class="chapter-desc">Quotation, invoice, laporan & surat rasmi — siap dalam minit</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 03</div>
+      <div class="chapter-name">Masalah Kewangan</div>
+      <div class="chapter-desc">Cashflow, P&L, margin & follow up hutang pelanggan</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 04</div>
+      <div class="chapter-name">Masalah Pemasaran</div>
+      <div class="chapter-desc">Konten 30 hari, skrip TikTok, FB ads & caption IG</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 05</div>
+      <div class="chapter-name">Masalah Operasi</div>
+      <div class="chapter-desc">SOP, checklist staff & sistem bisnes yang boleh jalan tanpa anda</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 06</div>
+      <div class="chapter-name">Masalah Pekerja</div>
+      <div class="chapter-desc">HR, tegur pekerja, interview & motivasi team</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 07</div>
+      <div class="chapter-name">Masalah Strategi</div>
+      <div class="chapter-desc">Keputusan bisnes besar, SWOT & plan 90 hari</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 08</div>
+      <div class="chapter-name">Masalah Pelanggan</div>
+      <div class="chapter-desc">Close sale, retain pelanggan & handle complaint</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 09</div>
+      <div class="chapter-name">Tips Advanced</div>
+      <div class="chapter-desc">5 rahsia guna Claude yang ramai owner bisnes tak tahu</div>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">BAB 10</div>
+      <div class="chapter-name">Action Plan 7 Hari</div>
+      <div class="chapter-desc">Pelan konkrit dari hari pertama — mula hari ini juga</div>
+    </div>
+    <div class="chapter-card" style="border-color: rgba(255,179,0,0.3); background: rgba(255,179,0,0.04);">
+      <div class="chapter-num" style="color: var(--gold);">BONUS 01</div>
+      <div class="chapter-name">50 Prompts Terbaik</div>
+      <div class="chapter-desc">Copy. Paste. Guna terus. Dikategorikan ikut situasi bisnes</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMPTS PREVIEW -->
+<section class="prompts-section">
+  <div class="section-label">Preview</div>
+  <h2 class="section-title">Contoh <span>Prompts</span> Yang Ada</h2>
+
+  <div class="blur-more">
+    <div class="prompt-preview">
+      <div class="prompt-cat">Dokumen</div>
+      "Buatkan quotation untuk [nama pelanggan] bagi kerja [jenis kerja]. Item: [senarai]. Harga setiap item: [harga]. Guna bahasa formal tapi mesra."
+    </div>
+    <div class="prompt-preview">
+      <div class="prompt-cat">Kewangan</div>
+      "Ini ringkasan cashflow saya: Masuk RM[X], Keluar RM[Y], Baki RM[Z]. Tolong analisa dan cadangkan apa yang patut saya buat."
+    </div>
+    <div class="prompt-preview">
+      <div class="prompt-cat">Pemasaran</div>
+      "Saya jual [produk/servis] untuk [target market]. Buatkan 30 idea konten untuk satu bulan — campuran edukatif, promosi, dan engaging."
+    </div>
+    <div class="prompt-preview">
+      <div class="prompt-cat">Pelanggan</div>
+      "Pelanggan dah tanya harga tapi belum decide. Buatkan follow up message yang natural, tak pushy, tapi boleh nudge dia untuk buat keputusan."
+    </div>
+  </div>
+
+  <p style="text-align:center; color: var(--muted); font-size:13px; margin-top:20px;">
+    + 46 lagi prompts dalam ebook 👇
+  </p>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <blockquote>
+    Claude bukan pengganti anda. Claude adalah tangan kanan anda yang tak pernah penat, tak pernah salah faham, dan sentiasa bersedia 24 jam.
+  </blockquote>
+  <div class="quote-author">— Boss Bob, #BobCEO</div>
+</div>
+
+<!-- DOWNLOAD FORM -->
+<section id="download" style="padding: 80px 24px; background: var(--navy);">
+  <div class="form-section" style="padding: 0;">
+    <div class="form-card">
+      <h2>Download <span>Percuma</span> Sekarang</h2>
+      <p>Isi nama dan email anda. Ebook akan tersedia untuk download serta-merta.</p>
+
+      <div id="formState">
+        <div class="form-group">
+          <label>Nama Anda</label>
+          <input type="text" id="nameInput" placeholder="cth: Ahmad Rizal" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email Aktif</label>
+          <input type="email" id="emailInput" placeholder="cth: ahmad@email.com" autocomplete="email">
+        </div>
+        <button class="btn-download" onclick="handleDownload()">
+          <span class="btn-icon">📥</span> Download Ebook Percuma
+        </button>
+        <p class="form-note">
+          🔒 Email anda selamat. Tiada spam. Boleh unsubscribe bila-bila masa.
+        </p>
+      </div>
+
+      <div class="success-state" id="successState">
+        <div class="success-icon">✓</div>
+        <h3>Terima Kasih!</h3>
+        <p id="successMsg">Ebook anda sedia untuk download. Klik butang di bawah.</p>
+        <a href="Claude_Penyelesaian_Masalah_Owner_Bisnes.pdf" download class="btn-actual-download">
+          ⬇ Download Ebook Sekarang
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h2>Masih Ragu-ragu? <span>Ia Percuma.</span></h2>
+  <p>Tiada risiko. Download, baca, dan mula guna hari ini.</p>
+  <a href="#download" class="nav-cta" style="font-size:15px; padding:14px 28px; display:inline-block;">
+    Download Sekarang — Percuma →
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>#BobCEO</span> · Membina Bisnes. Membina Manusia. Memberi Manfaat.</p>
+  <p style="margin-top:6px;">Ebook ini percuma untuk dikongsi. Jangan ubah suai kandungan.</p>
+</footer>
+
+<script>
+function handleDownload() {
+  const name  = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+
+  if (!name) {
+    alert('Sila masukkan nama anda.');
+    document.getElementById('nameInput').focus();
+    return;
+  }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    alert('Sila masukkan email yang sah.');
+    document.getElementById('emailInput').focus();
+    return;
+  }
+
+  // Save to localStorage as simple lead store
+  const leads = JSON.parse(localStorage.getItem('ebook_leads') || '[]');
+  leads.push({ name, email, ts: new Date().toISOString() });
+  localStorage.setItem('ebook_leads', JSON.stringify(leads));
+
+  // Show success
+  document.getElementById('formState').style.display = 'none';
+  const ss = document.getElementById('successState');
+  ss.style.display = 'block';
+  document.getElementById('successMsg').textContent =
+    `Terima kasih, ${name}! Klik butang di bawah untuk download ebook anda.`;
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
